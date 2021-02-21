@@ -19,47 +19,47 @@ public class Main {
         service.addUser("Salman");
         service.addUser("Deepika");
         try {
-            service.addReview("SRK", "Don", 2);
+            System.out.println(service.addReview("SRK", "Don", 2));
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
         try {
-            service.addReview("SRK", "Padmaavat", 8);
+            System.out.println(service.addReview("SRK", "Padmaavat", 8));
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
         try {
-            service.addReview("Salman", "Don", 5);
+            System.out.println(service.addReview("Salman", "Don", 5));
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
         try {
-            service.addReview("Deepika", "Don", 9);
+            System.out.println(service.addReview("Deepika", "Don", 9));
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
         try {
-            service.addReview("Deepika", "Guru", 6);
+            System.out.println(service.addReview("Deepika", "Guru", 6));
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
         try {
-            service.addReview("SRK", "Don", 10);
+            System.out.println(service.addReview("SRK", "Don", 10));
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
         try {
-            service.addReview("Deepika", "LunchBox", 5);
+            System.out.println(service.addReview("Deepika", "LunchBox", 5));
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
         try {
-            service.addReview("SRK", "Tiger", 5);
+            System.out.println(service.addReview("SRK", "Tiger", 5));
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
         try {
-            service.addReview("SRK", "Metro", 7);
+            System.out.println(service.addReview("SRK", "Metro", 7));
         } catch (Exception e){
             System.out.println(e.getMessage());
         }

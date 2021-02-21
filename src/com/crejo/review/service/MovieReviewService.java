@@ -21,27 +21,37 @@ public class MovieReviewService {
 
     /**
      * Add a new user
-     * @param name
+     * @param userName
+     * @return true if a new user added else false if user already exists
      */
-    public void addUser(String name){
+    public Boolean addUser(String userName){
+        if(userMap.containsKey(userName)){
+            return false;
+        }
         User user = new User();
-        user.setName(name);
+        user.setName(userName);
         user.setUserLevel(UserLevel.USER);
-        userMap.put(name, user);
+        userMap.put(userName, user);
+        return true;
     }
 
     /**
      * Add a new movie
-     * @param name
+     * @param movieName
      * @param yearOfRelease
      * @param genres
+     * @return true if a new movie added else false if movie already exists
      */
-    public void addMovie(String name, Integer yearOfRelease, Collection<String> genres){
+    public Boolean addMovie(String movieName, Integer yearOfRelease, Collection<String> genres){
+        if(movieMap.containsKey(movieName)){
+            return false;
+        }
         Movie movie = new Movie();
-        movie.setName(name);
+        movie.setName(movieName);
         movie.setYearOfRelease(yearOfRelease);
         movie.setGenres(genres);
-        movieMap.put(name, movie);
+        movieMap.put(movieName, movie);
+        return true;
     }
 
     /**
@@ -49,23 +59,27 @@ public class MovieReviewService {
      * @param userName
      * @param movieName
      * @param rating
+     * @return String
      * @throws Exception
      */
-    public void addReview(String userName, String movieName, Integer rating) throws Exception{
+    public String addReview(String userName, String movieName, Integer rating) throws Exception{
         Movie movie = movieMap.get(movieName);
         Date now = new Date();
         if(rating < 1 && rating > 10){
             throw new IllegalArgumentException("rating should be between 1 to 10");
         }
-        else if(now.getYear()+1900 < movie.getYearOfRelease()){
+        else if(now.getYear()+1900 < movie.getYearOfRelease()){//getYear returns year offset from 1900
             throw new MovieNotReleasedException("User Can't review unreleased movie");
         }
         else if(movie.getReviews().containsKey(userName)){
             throw new MultipleReviewException("User can't review a movie multiple times");
         }
         else{
+            StringBuilder update = new StringBuilder("Review added successfully ");
             updateMovie(movie, userName, rating);
-            updateUser(userName, movieName, rating);
+            String userStatus = updateUser(userName, movieName, rating);
+            update.append(userStatus);
+            return update.toString();
         }
     }
 
@@ -78,17 +92,23 @@ public class MovieReviewService {
         movie.getReviews().put(userName, rating);
     }
 
-    private void updateUser(String userName, String movieName, Integer rating){
+    private String updateUser(String userName, String movieName, Integer rating){
         User user = userMap.get(userName);
         user.setReviewCount(user.getReviewCount()+1);
         user.getReview().put(movieName, rating);
-        checkAndUpgradeUser(user);
+        String upgradeUser = "";
+        if(checkAndUpgradeUser(user)){
+            upgradeUser = userName + " is promoted to " + user.getUserLevel();
+        }
+        return upgradeUser;
     }
 
-    private void checkAndUpgradeUser(User user){
+    private Boolean checkAndUpgradeUser(User user){
         if(user.getReviewCount() == 3){
             user.setUserLevel(UserLevel.CRITIC);
+            return true;
         }
+        return false;
     }
 
     /**
